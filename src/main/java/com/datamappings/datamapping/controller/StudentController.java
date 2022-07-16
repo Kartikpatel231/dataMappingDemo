@@ -14,13 +14,15 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @GetMapping
-    List<Student> getStudent(Student student){
-        return studentService.getStudent(student);
+    //API: localhost:8080/students/100/search?age=10&city=indore&state=MP
+    @GetMapping("/{studId}")
+    List<Student> getStudent(@PathVariable Long studId, @RequestParam Integer age) {
+        return studentService.getStudent(studId, age);
     }
+
     @PostMapping
-    Student createStudent(@RequestBody Student student){
-        return  studentService.createStudent(student);
+    String createStudent(@RequestBody Student student) {
+        return studentService.createStudent(student);
     }
 
 

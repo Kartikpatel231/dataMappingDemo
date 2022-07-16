@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Subject {
@@ -16,15 +14,11 @@ public class Subject {
     private String name;
 
 
-    @JsonIgnore
-    @ManyToMany
-
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "enroll_student",
-            joinColumns = @JoinColumn(name = "Subject_id"),
-            inverseJoinColumns = @JoinColumn(name = "Student_id"))
-
-
-    private List<Student> enrolledStudents = new ArrayList<>();
+            joinColumns = @JoinColumn(name = "Subject_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "Student_id", referencedColumnName = "id"))
+    private List<Student> enrolledStudents;
 
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -52,17 +46,17 @@ public class Subject {
         return enrolledStudents;
     }
 
+    public void setEnrolledStudents(List<Student> enrolledStudents){
+        this.enrolledStudents = enrolledStudents;
+    }
 
     public Teacher getTeacher() {
         return teacher;
     }
 
-    public void assignTeacher(Teacher teacher) {
+    public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
 
-    public void enrolledStudents(Student student) {
-        enrolledStudents.add(student);
-    }
 }
 
